@@ -38,9 +38,9 @@ export class GradebookHeader extends React.Component {
       <div className="gradebook-header">
         <a
           href={this.lmsInstructorDashboardUrl(this.props.courseId)}
-          className="mb-3"
+          className="leti-gb-back"
         >
-          <span aria-hidden="true">{'<< '}</span>
+          <span className="leti-gb-back__chevron" aria-hidden="true">‹</span>
           <FormattedMessage {...messages.backToDashboard} />
         </a>
         <h1>

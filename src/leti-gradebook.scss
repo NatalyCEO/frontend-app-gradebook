@@ -1,0 +1,769 @@
+// LETIteach Gradebook — Learning / instructor visual language.
+// Loaded last from App.scss so it wins over stock GradesView rules.
+// Do not import @edx/brand here (breaks gradebook webpack/sass).
+
+$leti-blue: #00497c;
+$leti-header: #00407c;
+$leti-primary: #01306e;
+$leti-bg: #f5f5f5;
+$leti-surface: #fff;
+$leti-text: #313131;
+$leti-muted: #717171;
+$leti-border: #e8e8e8;
+$leti-success: #449d44;
+$leti-danger: #b20610;
+$leti-thead: rgba(0, 64, 124, 0.85);
+$leti-row-hover: rgba(0, 64, 124, 0.06);
+$leti-zebra: #fafafa;
+$body-font: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$title-font: 'IBM Plex Sans', Plex, 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$leti-radius: 10px;
+$leti-student-col-width: 11.5rem;
+$leti-header-offset: 72px;
+
+// ---------------------------------------------------------------------------
+// Page shell
+// ---------------------------------------------------------------------------
+body,
+#root {
+  background-color: $leti-bg !important;
+  color: $leti-text !important;
+  font-family: $body-font !important;
+}
+
+// Full-bleed shell; horizontal padding lives on .leti-gb-content / .gradebook-content
+.page-gradebook {
+  background-color: $leti-bg;
+  min-height: calc(100vh - #{$leti-header-offset});
+  width: 100%;
+  max-width: 100%;
+  font-family: $body-font;
+}
+
+.page-gradebook.sidebar-container {
+  width: 100%;
+  max-width: 100%;
+}
+
+// Gutters: beat Bootstrap .px-* (!important) by targeting both classes + sides explicitly
+.gradebook-content,
+.leti-gb-content,
+.gradebook-content.leti-gb-content,
+.px-3.gradebook-content {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  padding-top: 0.75rem !important;
+  padding-bottom: 2rem !important;
+  padding-left: 7rem !important; // was 3.5rem — 2× side gutters
+  padding-right: 7rem !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  font-family: $body-font !important;
+  color: $leti-text;
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: $title-font !important;
+    color: $leti-blue !important;
+    font-weight: 600;
+  }
+
+  h4 {
+    margin-top: 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Step sections (1 = filters, 2 = grades table)
+// ---------------------------------------------------------------------------
+.leti-gb-section {
+  margin: 0 0 1.25rem;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0 0 0.75rem;
+  }
+
+  &__title {
+    margin: 0 !important;
+    font-family: $title-font !important;
+    font-size: 1.15rem !important;
+    font-weight: 600 !important;
+    color: $leti-blue !important;
+    line-height: 1.3;
+  }
+}
+
+.leti-gb-step {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: $leti-header;
+  color: #fff !important;
+  font-family: $title-font;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.leti-gb-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 0.75rem;
+
+  &__start,
+  &__end {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.65rem 0.85rem;
+    min-width: 0;
+  }
+
+  &__end {
+    margin-left: auto;
+    justify-content: flex-end;
+  }
+
+  &__filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.65rem 0.85rem;
+    width: 100%;
+  }
+
+  // Search below filters, right-aligned
+  &__search-row {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 0.25rem;
+  }
+
+  &--filters {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    margin-bottom: 0.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  &--grades {
+    align-items: flex-end;
+  }
+}
+
+// Search above the table, right-aligned
+.leti-gb-search-bar {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin: 0.5rem 0 0.75rem;
+}
+
+// Minimal back link
+.leti-gb-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin: 0 0 0.65rem;
+  padding: 0;
+  color: $leti-muted !important;
+  font-family: $body-font;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-decoration: none !important;
+  border: none;
+  background: none;
+
+  &__chevron {
+    font-size: 1.1rem;
+    line-height: 1;
+    color: inherit;
+  }
+
+  &:hover,
+  &:focus {
+    color: $leti-blue !important;
+    text-decoration: none !important;
+  }
+}
+
+// Table pagination — arrows + page counter (instructor-like)
+.leti-gb-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 1rem 0 0.5rem;
+  padding: 0;
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid $leti-border;
+    border-radius: 6px;
+    background: $leti-surface;
+    color: $leti-header;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+    &:hover:not(:disabled),
+    &:focus:not(:disabled) {
+      background: rgba(0, 64, 124, 0.08);
+      border-color: $leti-header;
+      color: $leti-primary;
+      outline: none;
+    }
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  }
+
+  &__status {
+    min-width: 4.5rem;
+    text-align: center;
+    font-family: $body-font;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $leti-text;
+    letter-spacing: 0.02em;
+  }
+}
+
+// Edit Filters: transparent + navy outline
+#edit-filters-btn.leti-gb-edit-filters,
+.leti-gb-edit-filters,
+.leti-gb-edit-filters.btn-outline-primary {
+  background-color: transparent !important;
+  background-image: none !important;
+  color: $leti-header !important;
+  border: 1.5px solid $leti-header !important;
+  box-shadow: none !important;
+
+  .pgn__icon,
+  .fa,
+  svg {
+    color: $leti-header !important;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: rgba(0, 64, 124, 0.08) !important;
+    color: $leti-primary !important;
+    border-color: $leti-primary !important;
+
+    .pgn__icon,
+    .fa,
+    svg {
+      color: $leti-primary !important;
+    }
+  }
+}
+
+.leti-gb-search {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 0 1 360px;
+  width: auto;
+  min-width: min(280px, 100%);
+  max-width: 360px;
+
+  .pgn__searchfield,
+  .input-group {
+    min-width: 240px;
+  }
+
+  .search-help-text {
+    margin: 0.25rem 0 0 !important;
+    color: $leti-muted !important;
+    font-size: 0.75rem;
+    text-align: left;
+  }
+}
+
+.leti-gb-masters-hint {
+  margin-top: 0.75rem;
+  color: $leti-muted;
+  font-size: 0.85rem;
+}
+
+.gradebook-header {
+  margin-bottom: 1rem;
+
+  a:not(.leti-gb-back) {
+    color: $leti-blue !important;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+      color: $leti-primary !important;
+    }
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    margin: 0.15rem 0 0.5rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: $leti-muted !important;
+    word-break: break-all;
+  }
+
+  .subtitle-row {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Buttons / forms (Paragon)
+// ---------------------------------------------------------------------------
+// Also keep primary fill rules from painting the Edit Filters outline button
+.page-gradebook {
+  .btn-primary:not(.leti-gb-edit-filters),
+  .btn.btn-primary:not(.leti-gb-edit-filters) {
+    background-color: $leti-blue !important;
+    border-color: $leti-blue !important;
+    color: #fff !important;
+
+    &:hover,
+    &:focus {
+      background-color: $leti-primary !important;
+      border-color: $leti-primary !important;
+    }
+  }
+
+  .btn-outline-primary,
+  .btn-tertiary,
+  .btn.btn-tertiary {
+    color: $leti-blue !important;
+    border-color: $leti-blue !important;
+    background: transparent !important;
+
+    &:hover,
+    &:focus {
+      background-color: $leti-row-hover !important;
+      color: $leti-primary !important;
+    }
+  }
+
+  .form-group label,
+  .pgn__form-group label {
+    font-weight: 600 !important;
+    color: $leti-text;
+    font-family: $body-font;
+  }
+
+  .form-control,
+  .pgn__form-control,
+  select.form-control {
+    border-color: $leti-border !important;
+    border-radius: 6px !important;
+    min-height: 40px;
+    font-family: $body-font;
+
+    &:focus {
+      border-color: $leti-blue !important;
+      box-shadow: 0 0 0 0.15rem rgba(0, 73, 124, 0.2) !important;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Filter sidebar
+// ---------------------------------------------------------------------------
+.page-gradebook.sidebar-container {
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+
+  .sidebar {
+    background: $leti-surface;
+    border-right: 1px solid $leti-border;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.06);
+    z-index: 20;
+  }
+
+  .sidebar-header,
+  .filter-sidebar-header {
+    border-bottom: 1px solid $leti-border;
+    background: $leti-surface;
+
+    h2,
+    h3,
+    h4 {
+      font-family: $title-font !important;
+      color: $leti-blue !important;
+      font-size: 1.1rem;
+    }
+  }
+
+  .sidebar-contents {
+    background: $leti-bg;
+    width: 100% !important;
+    max-width: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
+    box-sizing: border-box;
+
+    // When filter drawer is open, keep remaining space (stock behavior)
+    &.opening {
+      width: calc(100% - 350px) !important;
+      max-width: calc(100% - 350px);
+    }
+  }
+
+  .sidebar.open + .sidebar-contents {
+    width: calc(100% - 350px) !important;
+    max-width: calc(100% - 350px);
+  }
+}
+
+@media (max-width: 991.98px) {
+  .page-gradebook.sidebar-container {
+    .sidebar {
+      position: fixed !important;
+      top: $leti-header-offset;
+      left: 0;
+      bottom: 0;
+      height: auto !important;
+      max-width: min(350px, 92vw);
+      z-index: 1040;
+      background: $leti-surface;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.18);
+    }
+
+    // Do not permanently shrink the table when filters open on tablet/phone
+    .sidebar.open + .sidebar-contents,
+    .sidebar-contents.opening {
+      margin-left: 0 !important;
+      width: 100% !important;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Gradebook table container + sticky thead / student column
+// Username uses Paragon rowHeaderColumnKey → <th scope="row"> in tbody
+// ---------------------------------------------------------------------------
+.gradebook-container {
+  width: 100% !important;
+  // Use most of the viewport below header + page chrome (search/filters)
+  max-height: calc(100vh - #{$leti-header-offset} - 8.5rem) !important;
+  height: auto !important;
+  min-height: min(480px, calc(100vh - #{$leti-header-offset} - 8.5rem));
+  overflow: auto !important;
+  position: relative !important;
+  background: $leti-surface;
+  border: 1px solid $leti-border;
+  border-radius: $leti-radius;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 0 !important;
+
+  // Remove empty Paragon control/status bar strip above thead
+  .pgn__data-table-status-bar,
+  .pgn__data-table-control-bar,
+  .pgn__data-table-actions-left,
+  .pgn__data-table-actions-right,
+  [class*='TableControlBar'],
+  .bg-light.sticky-top {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    min-height: 0 !important;
+  }
+
+  .pgn__data-table-wrapper,
+  .pgn__data-table-container,
+  .pgn__data-table-layout-wrapper {
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  // First visual content = thead (no white gap under rounded top)
+  .pgn__data-table,
+  table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    margin: 0 !important;
+    font-family: $body-font;
+    color: $leti-text;
+  }
+
+  // Sticky navy translucent header (instructor-style) — flush to container top
+  thead th,
+  .pgn__data-table thead th,
+  thead .pgn__data-table-header-cell {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 3 !important;
+    background: $leti-thead !important;
+    color: #fff !important;
+    font-family: $body-font !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-top: none !important;
+    vertical-align: middle !important;
+    white-space: nowrap;
+    padding: 0.7rem 0.75rem !important;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
+    &:first-child {
+      border-top-left-radius: calc(#{$leti-radius} - 1px);
+    }
+
+    &:last-child {
+      border-top-right-radius: calc(#{$leti-radius} - 1px);
+    }
+
+    a,
+    button,
+    .btn,
+    span {
+      color: #fff !important;
+    }
+
+    svg,
+    .pgn__icon {
+      color: #fff !important;
+      fill: #fff !important;
+    }
+  }
+
+  // Sticky student (username) column — first column / row headers
+  thead th:first-child,
+  thead .pgn__data-table-header-cell:first-child {
+    left: 0 !important;
+    z-index: 5 !important;
+    min-width: $leti-student-col-width;
+    max-width: 16rem;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.12);
+  }
+
+  tbody th,
+  tbody th[scope='row'],
+  tbody td:first-child {
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 2 !important;
+    background: $leti-surface !important;
+    min-width: $leti-student-col-width;
+    max-width: 16rem;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.06);
+    vertical-align: middle !important;
+    padding: 0.55rem 0.75rem !important;
+  }
+
+  tbody tr:nth-child(even) th,
+  tbody tr:nth-child(even) th[scope='row'],
+  tbody tr:nth-child(even) td:first-child {
+    background: $leti-zebra !important;
+  }
+
+  tbody tr:hover th,
+  tbody tr:hover th[scope='row'],
+  tbody tr:hover td:first-child {
+    background: #eef3f8 !important;
+  }
+
+  tbody td {
+    border-color: $leti-border !important;
+    padding: 0.45rem 0.65rem !important;
+    vertical-align: middle !important;
+    font-size: 0.9rem;
+    min-height: 40px;
+  }
+
+  tbody tr:nth-child(even) td {
+    background-color: $leti-zebra;
+  }
+
+  tbody tr:hover td {
+    background-color: $leti-row-hover !important;
+  }
+
+  .wrap-text-in-cell {
+    color: $leti-text;
+    font-size: 0.875rem;
+  }
+
+  // Body cells: muted student key under username
+  tbody .student-key {
+    color: $leti-muted !important;
+    font-size: 0.75rem;
+  }
+
+  // Thead: Student Key label must stay readable on navy header
+  thead .student-key,
+  thead th .student-key,
+  thead .font-weight-normal.student-key {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 400 !important;
+    font-size: 0.75rem !important;
+    opacity: 1 !important;
+  }
+
+  // Grade cells / buttons — readable tap targets
+  .btn,
+  button {
+    min-height: 36px;
+  }
+
+  a {
+    color: $leti-blue;
+  }
+}
+
+// Score / filter controls above the table
+.gradebook-content {
+  .filter-group,
+  .student-filters {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: 0;
+    box-shadow: none;
+  }
+
+  .search-help-text {
+    color: $leti-muted;
+  }
+}
+
+// Alerts
+.gradebook-header .alert {
+  border-radius: $leti-radius;
+  margin-top: 0.75rem;
+}
+
+// ---------------------------------------------------------------------------
+// Tablet / phone: denser cells, keep scroll + sticky
+// ---------------------------------------------------------------------------
+@media (max-width: 991.98px) {
+  .gradebook-content,
+  .leti-gb-content,
+  .gradebook-content.leti-gb-content {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+
+  .leti-gb-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+
+    &__end {
+      margin-left: 0;
+      width: 100%;
+      justify-content: stretch;
+    }
+
+    &__search-row {
+      justify-content: stretch;
+    }
+  }
+
+  .leti-gb-search {
+    max-width: none;
+    flex: 1 1 auto;
+    width: 100%;
+
+    .pgn__searchfield,
+    .input-group {
+      min-width: 0;
+      width: 100%;
+    }
+  }
+
+  .leti-gb-search-bar {
+    justify-content: stretch;
+
+    .leti-gb-search {
+      max-width: none;
+      width: 100%;
+    }
+  }
+
+  .gradebook-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .gradebook-container {
+    max-height: calc(100vh - #{$leti-header-offset} - 9rem) !important;
+    border-radius: 8px;
+
+    thead th,
+    .pgn__data-table thead th {
+      padding: 0.55rem 0.5rem !important;
+      font-size: 0.8rem;
+
+      &:first-child {
+        border-top-left-radius: 7px;
+      }
+
+      &:last-child {
+        border-top-right-radius: 7px;
+      }
+    }
+
+    tbody td,
+    tbody th {
+      padding: 0.4rem 0.5rem !important;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .gradebook-container {
+    max-height: calc(100vh - #{$leti-header-offset} - 7.5rem) !important;
+
+    thead th:first-child,
+    tbody th,
+    tbody th[scope='row'],
+    tbody td:first-child {
+      min-width: 8.5rem;
+    }
+  }
+}

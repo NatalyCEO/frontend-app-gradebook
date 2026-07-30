@@ -16,7 +16,8 @@ import messages from './FilterMenuToggle.messages';
 export const FilterMenuToggle = ({ toggleFilterDrawer }) => (
   <Button
     id="edit-filters-btn"
-    className="btn-primary align-self-start"
+    variant="outline-primary"
+    className="leti-gb-edit-filters align-self-start"
     onClick={toggleFilterDrawer}
   >
     <Icon className="fa fa-filter" /> <FormattedMessage {...messages.editFilters} />

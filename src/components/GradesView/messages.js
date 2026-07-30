@@ -3,13 +3,13 @@ import { defineMessages } from '@edx/frontend-platform/i18n';
 const messages = defineMessages({
   filterStepHeading: {
     id: 'gradebook.GradesView.filterHeading',
-    defaultMessage: 'Step 1: Filter the Grade Report',
-    description: 'Filter controls container heading string',
+    defaultMessage: 'Filter the Grade Report',
+    description: 'Filter controls section title (step number shown in UI)',
   },
   gradebookStepHeading: {
     id: 'gradebook.GradesView.gradebookStepHeading',
-    defaultMessage: 'Step 2: View or Modify Individual Grades',
-    description: 'Alert text for invalid minimum course grade',
+    defaultMessage: 'View or Modify Individual Grades',
+    description: 'Grades table section title (step number shown in UI)',
   },
   mastersHint: {
     id: 'gradebook.GradesView.mastersHint',

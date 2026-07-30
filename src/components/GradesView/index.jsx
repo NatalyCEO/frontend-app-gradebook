@@ -46,33 +46,57 @@ export class GradesView extends React.Component {
         <SpinnerIcon />
 
         <InterventionsReport />
-        <h4 className="step-message-1">
-          <FormattedMessage {...messages.filterStepHeading} />
-        </h4>
 
-        <div className="d-flex justify-content-between">
-          <FilterMenuToggle />
-          <SearchControls />
-        </div>
+        <section className="leti-gb-section leti-gb-section--filters">
+          <header className="leti-gb-section__head">
+            <span className="leti-gb-step" aria-hidden="true">1</span>
+            <h2 className="leti-gb-section__title">
+              <FormattedMessage {...messages.filterStepHeading} />
+            </h2>
+          </header>
 
-        <FilterBadges handleClose={this.handleFilterBadgeClose} />
-        <StatusAlerts />
+          <div className="leti-gb-toolbar leti-gb-toolbar--filters">
+            <div className="leti-gb-toolbar__filters-row">
+              <FilterMenuToggle />
+              <FilterBadges handleClose={this.handleFilterBadgeClose} />
+            </div>
+          </div>
 
-        <h4><FormattedMessage {...messages.gradebookStepHeading} /></h4>
+          <StatusAlerts />
+        </section>
 
-        <div className="d-flex justify-content-between align-items-center mb-2">
-          <ScoreViewInput />
-          <BulkManagementControls />
-        </div>
+        <section className="leti-gb-section leti-gb-section--grades">
+          <header className="leti-gb-section__head">
+            <span className="leti-gb-step" aria-hidden="true">2</span>
+            <h2 className="leti-gb-section__title">
+              <FormattedMessage {...messages.gradebookStepHeading} />
+            </h2>
+          </header>
 
-        <FilteredUsersLabel />
+          <div className="leti-gb-toolbar leti-gb-toolbar--grades">
+            <div className="leti-gb-toolbar__start">
+              <ScoreViewInput />
+            </div>
+            <div className="leti-gb-toolbar__end">
+              <BulkManagementControls />
+            </div>
+          </div>
 
-        <GradebookTable />
+          <FilteredUsersLabel />
 
-        <PageButtons />
-        <p>* <FormattedMessage {...messages.mastersHint} /></p>
+          <div className="leti-gb-search-bar">
+            <SearchControls />
+          </div>
+
+          <GradebookTable />
+
+          <PageButtons />
+          <p className="leti-gb-masters-hint">
+            * <FormattedMessage {...messages.mastersHint} />
+          </p>
+        </section>
+
         <EditModal />
-
         <ImportSuccessToast />
       </>
     );

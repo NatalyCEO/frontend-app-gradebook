@@ -16,3 +16,6 @@ $input-focus-box-shadow: $input-box-shadow; // hack to get upgrade to paragon 4.
 @import "./components/BulkManagementHistoryView/BulkManagementHistoryView";
 @import "./components/WithSidebar/WithSidebar";
 @import "./components/GradebookFilters/GradebookFilters";
+
+// LETIteach overrides — must load last
+@import "./leti-gradebook";

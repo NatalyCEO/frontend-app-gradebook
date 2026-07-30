@@ -75,7 +75,6 @@ export class GradebookTable extends React.Component {
           itemCount={this.props.grades.length}
           RowStatusComponent={this.nullMethod}
         >
-          <DataTable.TableControlBar />
           <DataTable.Table />
           <DataTable.EmptyTable content={<FormattedMessage {...messages.noResultsFound} />} />
         </DataTable>
