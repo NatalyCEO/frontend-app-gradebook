@@ -21,7 +21,7 @@ export const FilteredUsersLabel = ({
   const bold = (val) => (<span className="font-weight-bold">{val}</span>);
   return (
     <FormattedMessage
-      id="gradebook.GradesTab.usersVisibilityLabel'"
+      id="gradebook.GradesTab.usersVisibilityLabel"
       defaultMessage="Showing {filteredUsers} of {totalUsers} total learners"
       description="Users visibility label"
       values={{
