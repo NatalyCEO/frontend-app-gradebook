@@ -11,10 +11,12 @@ import zhcnMessages from './messages/zh_CN.json';
 const messages = {
   ar: arMessages,
   'es-419': es419Messages,
-  'es-es': esEsMessages,
+  es: esEsMessages,
+  'es-es': esEsMessages, // legacy cookie alias
   fr: frMessages,
   'pt-br': ptbrMessages,
-  'pt-pt': ptPtMessages,
+  pt: ptPtMessages,
+  'pt-pt': ptPtMessages, // legacy cookie alias
   ru: ruMessages,
   'zh-cn': zhcnMessages,
 };
