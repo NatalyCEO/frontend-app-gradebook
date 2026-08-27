@@ -26,7 +26,7 @@
   "gradebook.GradesTab.FilterBadges.assignment": "Devoir",
   "gradebook.GradesTab.FilterBadges.assignmentGrade": "Note du devoir",
   "gradebook.GradesTab.FilterBadges.assignmentType": "Type De Devoir",
-  "gradebook.GradesTab.FilterBadges.cohort": "",
+  "gradebook.GradesTab.FilterBadges.cohort": "Cohorte",
   "gradebook.GradesTab.FilterBadges.courseGrade": "Note du cours",
   "gradebook.GradesTab.FilterBadges.includeCourseRoleMembers": "Inclure les membres de l'Équipe de cours",
   "gradebook.GradesTab.FilterBadges.track": "Parcours",

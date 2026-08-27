@@ -67,7 +67,7 @@
   "gradebook.GradesView.scoreViewLabel": "Vista de Pontuação",
   "gradebook.GradesView.search.hint": "Procurar por nome de utilizador, email, ou chave de estudante",
   "gradebook.GradesView.search.label": "Procurar um estudante",
-  "gradebook.GradesView.table.headings.email": "",
+  "gradebook.GradesView.table.headings.email": "E-mail",
   "gradebook.GradesView.table.headings.fullName": "Nome completo",
   "gradebook.GradesView.table.headings.totalGrade": "Classificação Total (%)",
   "gradebook.GradesView.table.headings.username": "Nome de utilizador",
